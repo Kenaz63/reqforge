@@ -1,12 +1,20 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Workspace from "./pages/Workspace";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
-      <Navbar title="ReqForge" />
-      <Hero />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+    path="/workspace"
+    element={<Workspace />}
+/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
