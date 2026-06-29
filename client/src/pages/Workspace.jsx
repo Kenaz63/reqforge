@@ -9,7 +9,16 @@ function Workspace() {
     async function handleSend() {
   console.log("SEND BUTTON CLICKED");
 
-  const res = await fetch("http://localhost:5000/api/health");
+  const res = await fetch("http://localhost:5000/api/request", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    method,
+    url,
+  }),
+});
 
   const data = await res.json();
 
