@@ -22,20 +22,33 @@ app.get("/api/health", (req, res) => {
 
 app.post("/api/request", async (req, res) => {
   try {
-    const { method, url } = req.body;
+    const { method, url, body } = req.body;
 
     const response = await axios({
       method,
       url,
+      data: body ? JSON.parse(body) : undefined,
     });
 
-    res.json(response.data);
+    res.json({
+  status: response.status,
+  data: response.data,
+});
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
+  if (error.response) {
+    return res.status(error.response.status).json({
+      status: error.response.status,
+      error: error.response.data,
     });
   }
+
+  res.status(500).json({
+    status: 500,
+    error: {
+      message: error.message,
+    },
+  });
+}
 });
 
 app.listen(PORT, () => {
