@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 function Hero() {
-  const [heading, setHeading] = useState("Build, Test & Debug APIs");
+  const heading = "Build, Test & Debug APIs Faster";
   const navigate = useNavigate();
 
   function handleGetStarted() {
   navigate("/dashboard");
 }
-
+  function handleViewSource() {
+  window.open(
+    "https://github.com/Kenaz63/reqforge",
+    "_blank"
+  );
+}
   return (
     <main className="flex-1 flex items-center justify-center px-6">
       <div className="max-w-4xl mx-auto text-center">
@@ -16,8 +21,7 @@ function Hero() {
         </h1>
 
         <p className="mt-6 text-xl text-slate-400">
-          Build, organize, test and debug your APIs with a lightweight workspace
-          designed for modern developers.
+          AI-powered API client for testing, debugging, and generating API requests in seconds.
         </p>
 
         <div className="flex justify-center gap-4 mt-10">
@@ -28,7 +32,10 @@ function Hero() {
             Get Started
           </button>
 
-          <button className="border border-slate-600 text-slate-200 hover:bg-slate-800 hover:border-slate-400 px-7 py-3 rounded-xl transition duration-200">
+          <button
+            onClick={handleViewSource}
+            className="border border-slate-600 text-slate-200 hover:bg-slate-800 hover:border-slate-400 px-7 py-3 rounded-xl transition duration-200"
+          >
             View Source
           </button>
         </div>

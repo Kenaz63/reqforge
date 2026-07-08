@@ -1,10 +1,7 @@
 function RequestBody({ body, setBody }) {
   return (
     <div className="mt-6">
-      <label className="block text-sm font-medium mb-2">
-        Request Body (JSON)
-      </label>
-
+   
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}

@@ -1,6 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-const axios = require("axios");
+import express from "express";
+import cors from "cors";
+import axios from "axios";
+import { generateRequest } from "./services/aiService.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -49,6 +50,35 @@ app.post("/api/request", async (req, res) => {
     },
   });
 }
+});
+
+app.post("/api/forge-ai", async (req, res) => {
+  try {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({
+        error: "Prompt is required",
+      });
+    }
+
+    const result = await generateRequest(prompt);
+
+    res.json({
+      success: true,
+      result: JSON.parse(result),
+    });
+  } catch (error) {
+    console.error("ForgeAI Error:");
+    console.error(error);
+    console.error(error.message);
+    console.error(error.stack);
+
+    res.status(500).json({
+  success: false,
+  error: error.message,
+});
+  }
 });
 
 app.listen(PORT, () => {
