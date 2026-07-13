@@ -35,9 +35,18 @@ function removeParameter(index) {
 }
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-8">
-      <h2 className="text-xl font-semibold mb-5">
-        Query Parameters
-      </h2>
+      <div className="flex justify-between items-center mb-5">
+  <h2 className="text-xl font-semibold">
+    Query Parameters
+  </h2>
+
+  <button
+    onClick={addParameter}
+    className="bg-blue-600 hover:bg-blue-500 transition px-4 py-2 rounded-lg"
+  >
+    + Add Parameter
+  </button>
+</div>
 
       {queryParams.map((param, index) => (
   <div
@@ -66,19 +75,14 @@ function removeParameter(index) {
 
 <button
   onClick={() => removeParameter(index)}
-  className="bg-red-600 hover:bg-red-700 px-4 rounded-lg"
+  className="bg-red-600 hover:bg-red-500 px-4 rounded-lg"
+  title="Delete Parameter"
 >
-  ✕
+  🗑
 </button>
 
   </div>
 ))}
-<button
-  onClick={addParameter}
-  className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg font-semibold"
->
-  + Add Parameter
-</button>
     </div>
   );
 }

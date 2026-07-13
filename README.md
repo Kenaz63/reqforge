@@ -1,24 +1,26 @@
-# ⚡ ReqForge
+# ⚡ReqForge
 
-> AI-powered API Testing Platform built with React, Express.js and Groq AI.
+> Build, test and understand REST APIs with AI-powered response explanations.
 
-ReqForge is a modern API testing platform that allows developers to build, test, debug and generate REST API requests using natural language.
+ReqForge is an AI-powered API testing platform designed to simplify API exploration for developers and beginners.
 
-Instead of manually configuring requests, users can describe an API in plain English and **ForgeAI** automatically generates the request.
+It combines a traditional API testing workspace with **ForgeAI**, allowing users to quickly generate supported API requests and receive AI-powered explanations of server responses in simple language.
 
 ---
 
 ## 🚀 Features
 
-- 🧠 **ForgeAI** – Generate API requests using natural language
-- 🌐 Send HTTP requests (GET, POST, PUT, PATCH, DELETE)
+- 🤖 ForgeAI-assisted API request generation (supported demo APIs)
+- 📖 AI-powered server response explanations
+- 🌐 Send HTTP requests (GET, POST, PUT, DELETE)
 - 📝 Dynamic Request Headers
 - 🔍 Dynamic Query Parameters
 - 📦 JSON Request Body Editor
-- 📊 Beautiful Response Viewer
+- 📊 Response Viewer
+- 📍 Weather location detection
 - ⏱ Response Time Indicator
-- 📋 Copy API Response
-- ⚡ Modern Dark UI
+- 📋 Copy Response & AI Analysis
+- 🌙 Modern responsive UI
 
 ---
 
@@ -26,20 +28,27 @@ Instead of manually configuring requests, users can describe an API in plain Eng
 
 ### Landing Page
 
-> *(Add screenshot here)*
-
-### Request Workspace
-
-> *(Add screenshot here)*
+> ![alt text](LandingPage.png)
 
 ### ForgeAI
 
-> *(Add screenshot here)*
+> ![alt text](ForgeAI.png)
 
-### API Response
+### Generated Request
 
-> *(Add screenshot here)*
+> ![alt text](Request.png)
 
+### Server Response
+
+> ![alt text](ServerResponse.png)
+
+### ForgeAI Analysis
+
+> ![alt text](AIAnalysis.png)
+
+## 🎥 Demo
+
+> ![alt text](demo.gif)
 ---
 
 ## 🛠 Tech Stack
@@ -61,6 +70,14 @@ Instead of manually configuring requests, users can describe an API in plain Eng
 
 - Groq API
 - Llama 3.3 70B Versatile
+
+### APIs Used
+
+- GitHub API
+- Open-Meteo API
+- Open Library API
+- Hipolabs Universities API
+- JSONPlaceholder
 
 ---
 
@@ -99,6 +116,14 @@ GROQ_API_KEY=your_groq_api_key_here
 ```
 
 ---
+
+## 🔄 Workflow
+
+1. Generate an API request with ForgeAI or build one manually.
+2. Configure headers, query parameters or request body.
+3. Send the request.
+4. Inspect the server response.
+5. Let ForgeAI explain the response in beginner-friendly language.
 
 ## 📂 Project Structure
 

@@ -1,95 +1,79 @@
 import { useState } from "react";
 
-function AIRequestBuilder({ onGenerate }) {
+function ForgeAI({ onGenerate }) {
   const [prompt, setPrompt] = useState("");
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleGenerate() {
-  if (!prompt.trim()) return;
+    if (!prompt.trim()) return;
 
-  setLoading(true);
+    try {
+      setLoading(true);
 
-  try {
-    await onGenerate(prompt);
-    setPrompt("");
-  } finally {
-    setLoading(false);
-  }
+      const success = await onGenerate(prompt);
+
+if (success) {
+  setPrompt("");
 }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-8">
-      <div className="flex items-center gap-3 mb-5">
-  <span className="text-3xl">🤖</span>
 
-  <div>
-    <h2 className="text-xl font-bold text-white">
-      ForgeAI
-    </h2>
+      <div className="flex items-center gap-3 mb-4">
 
-    <p className="text-sm text-slate-400">
-      AI Request Builder
-    </p>
-  </div>
-</div>
+        <span className="text-3xl">🤖</span>
 
-<div className="flex flex-wrap gap-2 mb-4">
+        <div>
+          <h2 className="text-xl font-bold">
+            ForgeAI
+          </h2>
 
-  <button
-    onClick={() => setPrompt("Get all users from JSONPlaceholder")}
-    className="bg-slate-800 hover:bg-slate-700 text-sm px-3 py-2 rounded-lg"
-  >
-    👥 Get Users
-  </button>
+          <p className="text-sm text-slate-400">
+            Generate API requests instantly using supported demo APIs.
+          </p>
+        </div>
 
-  <button
-    onClick={() => setPrompt("Create a POST request to add a new user")}
-    className="bg-slate-800 hover:bg-slate-700 text-sm px-3 py-2 rounded-lg"
-  >
-    ➕ Create POST
-  </button>
-
-  <button
-    onClick={() => setPrompt("Delete user 5")}
-    className="bg-slate-800 hover:bg-slate-700 text-sm px-3 py-2 rounded-lg"
-  >
-    🗑 Delete User
-  </button>
-
-  <button
-    onClick={() => setPrompt("Get weather for London")}
-    className="bg-slate-800 hover:bg-slate-700 text-sm px-3 py-2 rounded-lg"
-  >
-    🌦 Weather API
-  </button>
-
-</div>
+      </div>
 
       <textarea
-        autoFocus
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Describe the API you want in plain English...
+        
+        placeholder={`Examples:
 
-        Examples:
-        • Get all users from JSONPlaceholder
-        • Create a POST request to add a user
+        • GitHub user torvalds
+        • Weather in Chennai
+        • Get all users
         • Delete user 5
-        • Get weather for London"
-        className="w-full bg-slate-800 border border-slate-700 rounded-lg p-4 h-32 resize-none outline-none"
+        • Atomic Habits
+        • Universities in Germany`}
+        className="w-full h-36 rounded-xl bg-slate-800 border border-slate-700 p-4 resize-none outline-none focus:border-green-500 transition"
       />
 
-      <button
-        onClick={handleGenerate}
-        disabled={loading}
-        className="mt-4 bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading
-          ? "🧠 Generating Request..."
-          : "✨ Generate with ForgeAI"}
-      </button>
+      <div className="flex justify-between items-center mt-4">
+
+        <span className="text-xs text-slate-500">
+          Supported APIs: GitHub • Weather • Books • Universities • JSONPlaceholder
+        </span>
+
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          className="bg-green-600 hover:bg-green-500 px-6 py-3 rounded-lg font-semibold disabled:opacity-50"
+        >
+          {loading
+            ? "🧠 Understanding Request..."
+            : "✨ Generate API Request"}
+        </button>
+
+      </div>
+
     </div>
   );
 }
 
-export default AIRequestBuilder;
+export default ForgeAI;

@@ -1,18 +1,39 @@
 import express from "express";
 import cors from "cors";
 import axios from "axios";
-import { generateRequest } from "./services/aiService.js";
+
+import {
+  generateRequest,
+  explainResponse,
+} from "./services/aiService.js";
+
+import { routeRequest } from "./services/requestRouter.js";
+import { buildRequest } from "./services/requestBuilder.js";
+
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+
 const PORT = 5000;
 
-// Home Route
+/* ------------------------- */
+/* Home */
+/* ------------------------- */
+
 app.get("/", (req, res) => {
-  res.send("Welcome to ReqForge Backend 🚀");
+  res.json({
+    name: "ReqForge API",
+    version: "1.0.0",
+    status: "Running",
+    author: "Kenaz",
+  });
 });
 
-// Health API Route
+/* ------------------------- */
+/* Health */
+/* ------------------------- */
+
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
@@ -21,36 +42,54 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+/* ------------------------- */
+/* Execute Request */
+/* ------------------------- */
+
 app.post("/api/request", async (req, res) => {
   try {
-    const { method, url, body } = req.body;
+    const { method, url, headers, body } = req.body;
+
+    const formattedHeaders = {};
+
+    (headers || []).forEach((header) => {
+      if (header.key.trim() && header.value.trim()) {
+        formattedHeaders[header.key] = header.value;
+      }
+    });
 
     const response = await axios({
       method,
       url,
+      headers: formattedHeaders,
       data: body ? JSON.parse(body) : undefined,
     });
 
     res.json({
-  status: response.status,
-  data: response.data,
-});
+      status: response.status,
+      data: response.data,
+      source: new URL(url).hostname,
+    });
   } catch (error) {
-  if (error.response) {
-    return res.status(error.response.status).json({
-      status: error.response.status,
-      error: error.response.data,
+    if (error.response) {
+      return res.status(error.response.status).json({
+        status: error.response.status,
+        error: error.response.data,
+      });
+    }
+
+    res.status(500).json({
+      status: 500,
+      error: {
+        message: error.message,
+      },
     });
   }
-
-  res.status(500).json({
-    status: 500,
-    error: {
-      message: error.message,
-    },
-  });
-}
 });
+
+/* ------------------------- */
+/* ForgeAI Request Generator */
+/* ------------------------- */
 
 app.post("/api/forge-ai", async (req, res) => {
   try {
@@ -58,29 +97,79 @@ app.post("/api/forge-ai", async (req, res) => {
 
     if (!prompt) {
       return res.status(400).json({
-        error: "Prompt is required",
+        success: false,
+        error: "Prompt is required.",
       });
     }
 
-    const result = await generateRequest(prompt);
+    const aiResult = await generateRequest(prompt);
+
+console.log("RAW AI RESPONSE:");
+console.log(aiResult);
+
+const parsed = JSON.parse(aiResult);
+console.log(parsed);
+    console.log("ForgeAI:", parsed);
+
+    const route = routeRequest(parsed);
+
+    if (!route.success) {
+      return res.json(route);
+    }
+
+    const request = await buildRequest(route);
+    console.log(request);
+    res.json({
+      success: true,
+      result: request,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+/* ------------------------- */
+/* ForgeAI Response Explainer */
+/* ------------------------- */
+
+app.post("/api/explain-response", async (req, res) => {
+  try {
+    const { request, response } = req.body;
+    let safeResponse = response;
+
+if (Array.isArray(response.data)) {
+  safeResponse = {
+    status: response.status,
+    data: {
+      total_results: response.data.length,
+      sample: response.data.slice(0, 3).map((u) => ({
+        name: u.name,
+        country: u.country,
+      })),
+    },
+  };
+}
+    const explanation = await explainResponse(request, safeResponse);
 
     res.json({
       success: true,
-      result: JSON.parse(result),
+      explanation,
     });
   } catch (error) {
-    console.error("ForgeAI Error:");
     console.error(error);
-    console.error(error.message);
-    console.error(error.stack);
 
     res.status(500).json({
-  success: false,
-  error: error.message,
-});
+      success: false,
+      error: error.message,
+    });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

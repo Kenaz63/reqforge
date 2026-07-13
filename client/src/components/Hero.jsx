@@ -5,7 +5,7 @@ function Hero() {
   const navigate = useNavigate();
 
   function handleGetStarted() {
-  navigate("/dashboard");
+  navigate("/workspace");
 }
   function handleViewSource() {
   window.open(
