@@ -8,6 +8,7 @@ import RequestHeaders from "../components/RequestHeaders";
 import QueryParams from "../components/QueryParams";
 import ForgeAI from "../components/ForgeAI";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 function Workspace() {
   /* -------------------------- */
   /* State */
@@ -159,7 +160,7 @@ function Workspace() {
     try {
       setError("");
 
-      const res = await fetch("http://localhost:5000/api/forge-ai", {
+      const res = await fetch(`${API_BASE}/api/forge-ai`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -250,7 +251,7 @@ function Workspace() {
       const finalUrl = url + buildQueryString();
 
       const res = await fetch(
-        "http://localhost:5000/api/request",
+        `${API_BASE}/api/request`,
         {
           method: "POST",
           headers: {
@@ -302,9 +303,7 @@ function Workspace() {
 
       const finalUrl = url + buildQueryString();
 
-      const res = await fetch(
-        "http://localhost:5000/api/explain-response",
-        {
+      const res = await fetch(`${API_BASE}/api/explain-response`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
